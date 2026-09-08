@@ -1,0 +1,132 @@
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+void insertBeg(int x) {
+    struct Node *p = malloc(sizeof(struct Node));
+    p->data = x;
+    p->next = head;
+    head = p;
+}
+
+void insertEnd(int x) {
+    struct Node *p = malloc(sizeof(struct Node));
+    p->data = x;
+    p->next = NULL;
+
+    if (head == NULL) {
+        head = p;
+        return;
+    }
+
+    struct Node *q = head;
+    while (q->next != NULL)
+        q = q->next;
+
+    q->next = p;
+}
+
+void deleteBeg() {
+    if (head == NULL) return;
+
+    struct Node *p = head;
+    head = head->next;
+    free(p);
+}
+
+void deleteEnd() {
+    if (head == NULL) return;
+
+    if (head->next == NULL) {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *p = head;
+    while (p->next->next != NULL)
+        p = p->next;
+
+    free(p->next);
+    p->next = NULL;
+}
+
+void display() {
+    struct Node *p = head;
+
+    while (p != NULL) {
+        printf("%d -> ", p->data);
+        p = p->next;
+    }
+
+    printf("NULL\n");
+}
+
+void search(int x) {
+    struct Node *p = head;
+
+    while (p != NULL) {
+        if (p->data == x) {
+            printf("Found\n");
+            return;
+        }
+        p = p->next;
+    }
+
+    printf("Not Found\n");
+}
+
+int main() {
+    int ch, x;
+
+    while (1) {
+        printf("\n1.Insert Beginning");
+        printf("\n2.Insert End");
+        printf("\n3.Delete Beginning");
+        printf("\n4.Delete End");
+        printf("\n5.Display");
+        printf("\n6.Search");
+        printf("\n7.Exit");
+
+        printf("\nEnter choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1:
+                scanf("%d", &x);
+                insertBeg(x);
+                break;
+            case 2:
+                scanf("%d", &x);
+                insertEnd(x);
+                break;
+            case 3:
+                deleteBeg();
+                break;
+            case 4:
+                deleteEnd();
+                break;
+            case 5:
+                display();
+                break;
+            case 6:
+                scanf("%d", &x);
+                search(x);
+                break;
+            case 7:
+                exit(0);
+            default:
+                printf("Invalid choice!");
+        }
+    }
+
+    return 0;
+}
+```
