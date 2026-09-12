@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int s[100], t = -1;
+
+int evalPostfix(char* e) {
+    for (int i = 0; e[i]; i++) {
+        if (isdigit(e[i])) s[++t] = e[i] - '0';
+        else if (e[i] != ' ') {
+            int v2 = s[t--], v1 = s[t--];
+            switch (e[i]) {
+                case '+': s[++t] = v1 + v2; break;
+                case '-': s[++t] = v1 - v2; break;
+                case '*': s[++t] = v1 * v2; break;
+                case '/': s[++t] = v1 / v2; break;
+            }
+        }
+    }
+    return s[t--];
+}
+
+int main() {
+    printf("Result: %d\n", evalPostfix("2 3 1 * + 9 -")); // 2 + (3 * 1) - 9 = -4
+    return 0;
+}
